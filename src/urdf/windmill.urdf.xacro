@@ -1,0 +1,90 @@
+<robot name="windmill_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:property name="large_z" value="2.0"/>  <!--z-->
+    <xacro:property name="large_x" value="0.1"/>  <!--x-->
+    <xacro:property name="large_y" value="0.1"/>  <!--y-->
+    <xacro:property name="large_block_mass" value="100.0"/>
+
+    <xacro:property name="small_x" value="0.02"/> <!--x-->
+    <xacro:property name="small_z" value="0.2"/>  <!--z-->
+    <xacro:property name="small_y" value="1.0"/>  <!--y-->
+    <xacro:property name="small_block_mass" value="0.05"/>
+
+    <!--large_block-->
+    <link name="large_block">
+        <inertial>
+            <mass value="${large_block_mass}"/>
+            <origin xyz="0 0 ${large_z/2}" rpy="0 0 0"/>
+            <inertia ixx="${large_block_mass*(large_y**2 + large_z**2)/12}" ixy="0" ixz="0"
+                     iyy="${large_block_mass*(large_x**2 + large_z**2)/12}" iyz="0"
+                     izz="${large_block_mass*(large_x**2 + large_y**2)/12}"/>
+        </inertial>
+        <visual>
+            <origin xyz="0 0 ${large_z/2}" rpy="0 0 0"/>
+            <geometry>
+                <box size="${large_x} ${large_y} ${large_z}"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0 0 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 ${large_z/2}" rpy="0 0 0"/>
+            <geometry>
+                <box size="${large_x} ${large_y} ${large_z}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!--small_block-->
+    <link name="small_block">
+        <inertial>
+            <mass value="${small_block_mass}"/>
+            <origin xyz="0 0 -0.5" rpy="0 0 0"/>
+            <inertia ixx="${small_block_mass*(small_y**2 + small_z**2)/12}" ixy="0" ixz="0"
+                     iyy="${small_block_mass*(small_x**2 + small_y**2)/12}" iyz="0"
+                     izz="${small_block_mass*(small_x**2 + small_z**2)/12}"/>
+        </inertial>
+        <visual>
+            <origin xyz="0 0 -0.5" rpy="0 0 0"/>
+            <geometry>
+                <box size="${small_x} ${small_z} ${small_y}"/>
+            </geometry>
+            <material name="red">
+                <color rgba="1 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 -0.5" rpy="0 0 0"/>
+            <geometry>
+                <box size="${small_x} ${small_z} ${small_y}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- Define the joint between the large and small blocks -->
+    <joint name="rotation_joint" type="revolute">
+        <parent link="large_block"/>
+        <child link="small_block"/>
+        <origin xyz="0.05 0 2.0" rpy="0 0 0"/>
+        <axis xyz="1 0 0"/>
+        <limit effort="1.0" velocity="1.69867" lower="-1e16" upper="1e16"/>
+    </joint>
+
+    <!-- Gazebo specific configurations -->
+    <gazebo>
+        <plugin name="ros_control" filename="libgazebo_ros_control.so">
+        </plugin>
+    </gazebo>
+    <!-- Transmission for the joint -->
+    <transmission name="rotation_joint_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="rotation_joint">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="rotation_joint_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+</robot>

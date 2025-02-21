@@ -1,0 +1,5 @@
+<library path="lib/libwindmill_controller">
+    <class name="windmill_controller/WindmillController" type="windmill_controller::WindmillController" base_class_type="controller_interface::ControllerBase">
+        <description>This controller can use pid and ff to control windmill.</description>
+    </class>
+</library>

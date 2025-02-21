@@ -1,0 +1,6 @@
+windmill_controller:
+    joint: rotation_joint
+    pid: { p: 0.5, i: 0, d: 0, i_clamp_min: -100, i_clamp_max: 100 }
+    kf: 0
+    small_speed: 1
+    big_speed: { a_max: 1.045, a_min: 0.780, w_max: 2.000, w_min: 1.884 }
