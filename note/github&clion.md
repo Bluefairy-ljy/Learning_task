@@ -37,7 +37,7 @@ step 4:在github上开启pr
 - 以叹号`!`表示不忽略(跟踪)匹配到的文件或目录；
 - 若匹配语句中无“/ ” ,便将其视为一个 glob匹配，如'abc'可以匹配 ' abc' , 'cd/abc' , 'ef/abcde.txt'
 - 若匹配语句中有'/ ' ,便视为一个路径匹配，如'abc/'可以匹配 ' abc' , 'cd/abc' ，但是无法匹配 'ef/abcde.txt'
-- 若匹配语句以'/ ' 开始，便视为匹配当前目录，如'/abc'可以匹配 ' abc' 但无法匹配 'cd/abc' 
+- 若匹配语句以'/ ' 开始，便视为匹配当前目录，如'/abc'可以匹配 ' abc' 但无法匹配 'cd/abc'
 
 **此外，.gitignore是按行从上到下进行规则匹配的，意味着如果前面的规则匹配的范围更大，则后面的规则将不会生效**
 
@@ -74,4 +74,3 @@ pre-commit install
 使用 `--allow-unrelated-histories`
 
 比如 git （） origin master --allow-unrelated-histories    （）可能是pull/push/merge,
-
